@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtSphere - Галерея современного искусства</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2d3748;
+            --secondary-color: #5a67d8;
+            --accent-color: #e53e3e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        
+        /* Навигационная панель */
+        .navbar-default {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-default .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar-default .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .navbar-default .navbar-brand:hover img {
+            transform: rotate(-5deg) scale(1.05);
+        }
+        
+        .navbar-default .navbar-toggle {
+            border-color: #ddd;
+        }
+        
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-default .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 15px 20px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: var(--secondary-color);
+            background-color: transparent;
+        }
+        
+        .dropdown-menu {
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            min-width: 220px;
+        }
+        
+        .dropdown-menu > li > a {
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            color: var(--text-color);
+        }
+        
+        .dropdown-menu > li > a:hover {
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 25px;
+            color: var(--secondary-color);
+        }
+        
+        /* Основной контент - слайдер */
+        .main-slides {
+            height: calc(100vh - 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .swiper {
+            width: 100%;
+            max-width: 1400px;
+            padding: 50px 0;
+            aspect-ratio: 16/9;
+            max-height: 80vh;
+        }
+        
+        .swiper-slide {
+            background-size: cover !important;
+            background-position: center !important;
+            scale: 0.85;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: flex-end;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            filter: brightness(0.9);
+        }
+        
+        .swiper-slide::before {
+            content: "";
+            position: absolute;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            width: 100%;
+            height: 50%;
+            bottom: 0;
+        }
+        
+        .swiper-slide-active {
+            scale: 1;
+            filter: brightness(1);
+            z-index: 1;
+        }
+        
+        .slide-info {
+            margin-bottom: 40px;
+            margin-left: 40px;
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .swiper-slide-active .slide-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.6);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .slide-desc {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .swiper-button-prev,
+        .swiper-button-next {
+            color: white;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .swiper-button-prev:hover,
+        .swiper-button-next:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .swiper-pagination-bullet {
+            background: white;
+            width: 12px;
+            height: 12px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            transform: scale(1.2);
+            background: var(--secondary-color);
+        }
+        
+        /* Футер */
+    footer {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        padding: 2rem 0 0;
+        position: relative;
+        width: 100%;
+        /* margin-top: 40px; */  /* Удалите или уменьшите это значение */
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+    
+    .footer-section {
+        margin-bottom: 20px;
+    }
+    
+    .footer-section h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: white;
+    }
+    
+    .footer-section p {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .footer-section p i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .footer-section a {
+        display: block;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 10px 0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-section a:hover {
+        color: white;
+    }
+    
+    .footer-section a i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .social-links a {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        padding: 15px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 20px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+    }
+        
+        /* Модальное окно приветствия */
+        .welcome-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-color);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .welcome-content {
+            background-color: white;
+            margin: 15vh auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            position: relative;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        
+        .welcome-modal.show .welcome-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .close-welcome {
+            color: #aaa;
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .close-welcome:hover {
+            color: var(--accent-color);
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .swiper {
+                max-width: 900px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .swiper {
+                max-width: 700px;
+                padding: 30px 0;
+            }
+            
+            .slide-info {
+                margin-left: 30px;
+                margin-bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-slides {
+                height: calc(100vh - 56px);
+            }
+            
+            .swiper {
+                max-width: 100%;
+                padding: 20px;
+                min-width: unset;
+            }
+            
+            .swiper-slide {
+                scale: 0.9;
+            }
+            
+            .swiper-slide-active {
+                scale: 1;
+            }
+            
+            .slide-info {
+                margin-left: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .navbar-default .navbar-nav > li > a {
+                padding: 10px 15px;
+            }
+            
+            footer a {
+                display: block;
+                margin: 0.8rem 0;
+            }
+            
+            .welcome-content {
+                margin: 10vh auto;
+                width: 90%;
+                padding: 1.5rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+            
+            .welcome-text {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .swiper {
+                aspect-ratio: 9/16;
+                height: 70vh;
+            }
+            
+            .swiper-slide {
+                scale: 0.95;
+            }
+            
+            .swiper-slide-active {
+                scale: 1;
+            }
+            
+            .swiper-button-prev,
+            .swiper-button-next {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Модальное окно приветствия -->
+<div id="welcomeModal" class="welcome-modal">
+    <div class="welcome-content">
+        <span class="close-welcome">&times;</span>
+        <h2 class="welcome-title" id="welcomeGreeting"></h2>
+        <p class="welcome-text" id="holidayMessage"></p>
+        <button class="btn btn-primary" id="continueButton">Продолжить</button>
+    </div>
+</div>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="1.html">
+                <img src="https://sun9-26.userapi.com/impg/zG7UPJh5HG1Rs9Ur_lrDSW9CxFxZC_KrXQ3kVw/XPRhtTZUYgQ.jpg?size=246x213&quality=96&sign=39c66d763404b96c01fcadd29a33deb5&type=album" alt="Логотип ArtSphere">
+                ArtSphere
+            </a>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Меню <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a></li>
+                        <li><a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a></li>
+                        <li><a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a></li>
+                        <li><a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a></li>
+                        <li><a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a></li>
+                        <li><a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a></li>
+                        <li><a href="zx.html"><i class="fas fa-clock"></i> Часы работы</a></li>
+		        <li><a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a></li>
+		        <li><a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a></li>
+		        <li><a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Основной контент - слайдер картин -->
+<main class="main-slides">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1629468845.2756.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Колли Виссон</h1>
+                    <h2 class="slide-desc">Австралия</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1618726437.4717.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Альмудена Пинтадо</h1>
+                    <h2 class="slide-desc">Серия |||-09</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1624186453.5246.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Даниэль Лозон</h1>
+                    <h2 class="slide-desc">Без названия</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1614883353.9521.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Ньяша Бандама</h1>
+                    <h2 class="slide-desc">Секретные коллекции</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1618562175.5036.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Альмудена Пинтадо</h1>
+                    <h2 class="slide-desc">Серия |-03</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1608010395.2991.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Алексей Чернышов</h1>
+                    <h2 class="slide-desc">Work 11</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1603038995.0972.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Виктор Пономаренко</h1>
+                    <h2 class="slide-desc">Остывшее время</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1614714718.3966.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Пётр Козлов</h1>
+                    <h2 class="slide-desc">Штутгазтуз Ризен</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1632292782.5956.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Антонио Ланчо Лопес</h1>
+                    <h2 class="slide-desc">Без названия</h2>
+                </div>
+            </div>
+            <div class="swiper-slide" style="background: url(https://arthall.online/storage/images/1631021033.9882.jpg);">
+                <div class="slide-info">
+                    <h1 class="slide-title">Алессандро Папари</h1>
+                    <h2 class="slide-desc">Благословенный</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</main>
+
+<!-- Футер -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Контакты</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Искусств, 15</p>
+            <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+            <p><i class="fas fa-envelope"></i> info@artsphere.ru</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Социальные сети</h4>
+            <div class="social-links">
+                <a href="https://vk.com/artsphere" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+                <a href="https://t.me/artsphere" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Меню</h4>
+            <a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a>
+            <a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a>
+            <a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a>
+            <a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a>
+            <a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a>
+            <a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a>
+            <a href="zx.html"><i class="fas fa-info-circle"></i> Часы работы</a>
+            <a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a>
+	    <a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a>
+	    <a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 ArtSphere. Все права защищены.</p>
+    </div>
+</footer>
+
+<!-- Скрипты -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Инициализация Swiper
+    const swiper = new Swiper('.swiper', {
+        direction: 'horizontal',
+        loop: true,
+        slidesPerView: 1,
+        centeredSlides: true,
+        spaceBetween: 30,
+        grabCursor: true,
+        effect: 'coverflow',
+        coverflowEffect: {
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 3,
+            slideShadows: false
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2
+            },
+            992: {
+                slidesPerView: 3
+            }
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            dynamicBullets: true,
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: false,
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+    });
+    
+    // Функция для показа приветственного сообщения
+    function showWelcomeMessage() {
+        if (sessionStorage.getItem('welcomeShown') !== 'true') {
+            const now = new Date();
+            const hours = now.getHours();
+            
+            // Приветствие по времени суток
+            let greeting;
+            if (hours >= 5 && hours < 12) {
+                greeting = "Доброе утро!";
+            } else if (hours >= 12 && hours < 18) {
+                greeting = "Добрый день!";
+            } else {
+                greeting = "Добрый вечер!";
+            }
+            
+            // Проверка праздников
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            let holidayMessage = "";
+            
+            const holidays = {
+                '1-1': 'С Новым годом! 🎄',
+                '1-7': 'С Рождеством! ✝️',
+                '2-14': 'С Днём святого Валентина! 💖',
+                '2-23': 'С Днём защитника Отечества! 🎖️',
+                '3-8': 'С Международным женским днём! 🌸',
+                '5-1': 'С Праздником весны и труда! 🌼',
+                '5-9': 'С Днём Победы! 🎖️',
+                '6-12': 'С Днём России! 🇷🇺',
+                '11-4': 'С Днём народного единства! 🤝',
+                '12-31': 'С наступающим Новым годом! 🎉'
+            };
+            
+            const currentDateKey = `${month}-${day}`;
+            if (holidays[currentDateKey]) {
+                holidayMessage = holidays[currentDateKey];
+            }
+            
+            document.getElementById('welcomeGreeting').textContent = greeting;
+            document.getElementById('holidayMessage').textContent = holidayMessage;
+            
+            const modal = document.getElementById('welcomeModal');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            
+            sessionStorage.setItem('welcomeShown', 'true');
+        }
+    }
+    
+    // Закрытие модального окна
+    document.querySelector('.close-welcome').addEventListener('click', closeWelcomeModal);
+    document.getElementById('continueButton').addEventListener('click', closeWelcomeModal);
+    
+    function closeWelcomeModal() {
+        const modal = document.getElementById('welcomeModal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+    
+    window.addEventListener('click', function(event) {
+        if (event.target === document.getElementById('welcomeModal')) {
+            closeWelcomeModal();
+        }
+    });
+    
+    // Показываем приветствие при загрузке страницы
+    window.addEventListener('load', function() {
+        setTimeout(showWelcomeMessage, 500);
+    });
+    
+    // Плавная прокрутка для всех ссылок
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Анимация навигационной панели при скролле
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar-default');
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        } else {
+            navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        }
+    });
+</script>
+</body>
+</html>

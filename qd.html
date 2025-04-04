@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtSphere - О проекте</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2d3748;
+            --secondary-color: #5a67d8;
+            --accent-color: #e53e3e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        
+        /* Навигационная панель */
+        .navbar-default {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-default .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar-default .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .navbar-default .navbar-brand:hover img {
+            transform: rotate(-5deg) scale(1.05);
+        }
+        
+        .navbar-default .navbar-toggle {
+            border-color: #ddd;
+        }
+        
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-default .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 15px 20px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: var(--secondary-color);
+            background-color: transparent;
+        }
+        
+        .dropdown-menu {
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            min-width: 220px;
+        }
+        
+        .dropdown-menu > li > a {
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            color: var(--text-color);
+        }
+        
+        .dropdown-menu > li > a:hover {
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 25px;
+            color: var(--secondary-color);
+        }
+
+        /* Заголовок страницы */
+        .page-header {
+            padding: 80px 20px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1579547945413-497e1b99dac0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #666;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Основное содержимое */
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+        
+        .about-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .about-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .about-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .about-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+        
+        .about-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .feature-card:hover .feature-icon,
+        .feature-card:hover .feature-title,
+        .feature-card:hover .feature-text {
+            color: white;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-text {
+            font-size: 0.95rem;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .team-section {
+            margin-top: 50px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .team-member {
+            text-align: center;
+        }
+        
+        .team-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover .team-photo {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .team-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .team-position {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .social-links a {
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #4a56b8 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--secondary-color);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 2rem 0 0;
+            position: relative;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section {
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .footer-section p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer-section p i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-social-links a {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .footer-section {
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                padding: 60px 15px 30px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .page-header h2 {
+                font-size: 1rem;
+            }
+            
+            .about-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="1.html">
+                <img src="https://sun9-26.userapi.com/impg/zG7UPJh5HG1Rs9Ur_lrDSW9CxFxZC_KrXQ3kVw/XPRhtTZUYgQ.jpg?size=246x213&quality=96&sign=39c66d763404b96c01fcadd29a33deb5&type=album" alt="Логотип ArtSphere">
+                ArtSphere
+            </a>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Меню <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a></li>
+                        <li><a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a></li>
+                        <li><a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a></li>
+                        <li><a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a></li>
+                        <li><a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a></li>
+                        <li><a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a></li>
+                        <li><a href="zx.html"><i class="fas fa-clock"></i> Часы работы</a></li>
+		        <li><a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a></li>
+		        <li><a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a></li>
+		        <li><a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Заголовок страницы -->
+<div class="page-header">
+    <h1>О проекте</h1>
+    <h2>ArtSphere / Наша миссия и ценности</h2>
+</div>
+
+<!-- Основное содержимое -->
+<div class="about-container">
+    <div class="about-section">
+        <h3 class="about-title">Наша история</h3>
+        <p class="about-text">ArtSphere - онлайн галерея современного искусства с собственным мобильным приложением. Здесь вы познакомитесь с работами талантливых современных российских и зарубежных художников. Эта цифровая выставка открывает для них оригинальную возможность высказаться и быть услышанными, несмотря на закрытые границы и другие ограничения.</p>
+        <p class="about-text">Основанная в 2018 году группой энтузиастов, ArtSphere быстро превратилась из небольшого студенческого проекта в ведущую платформу для демонстрации современного искусства. Наша миссия - сделать искусство доступным для каждого, независимо от географического положения и финансовых возможностей.</p>
+    </div>
+    
+    <div class="about-section">
+        <h3 class="about-title">Наши возможности</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h4 class="feature-title">Мобильное приложение</h4>
+                <p class="feature-text">Удобный просмотр и оценка картин с вашего смартфона</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-star"></i></div>
+                <h4 class="feature-title">Рейтинги</h4>
+                <p class="feature-text">Оценивайте работы по пятибалльной шкале</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                <h4 class="feature-title">Избранное</h4>
+                <p class="feature-text">Сохраняйте любимые работы в персональную галерею</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h4 class="feature-title">Умный поиск</h4>
+                <p class="feature-text">Фильтруйте произведения по тематике и стилю</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about-section">
+        <h3 class="about-title">Для художников</h3>
+        <p class="about-text">Если вы хотите присоединиться к сообществу художников ArtSphere и разместить свои картины на нашем сайте или в мобильном приложении, то все что вам нужно сделать — заполнить простую онлайн-форму, указать имя и ссылку на ваши работы, а также рассказать о ваших творческих интересах и пути к искусству.</p>
+        <p class="about-text">Мы предоставляем художникам:</p>
+        <ul style="color: #555; line-height: 1.8; padding-left: 20px;">
+            <li>Персональные страницы с биографией</li>
+            <li>Аналитику просмотров и оценок</li>
+            <li>Возможность продажи работ</li>
+            <li>Участие в виртуальных выставках</li>
+        </ul>
+    </div>
+    
+    <div class="about-section team-section">
+        <h3 class="about-title">Наша команда</h3>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Анна Смирнова" class="team-photo">
+                <h4 class="team-name">Анна Смирнова</h4>
+                <p class="team-position">Основатель & CEO</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Дмитрий Петров" class="team-photo">
+                <h4 class="team-name">Дмитрий Петров</h4>
+                <p class="team-position">Технический директор</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Елена Ковалева" class="team-photo">
+                <h4 class="team-name">Елена Ковалева</h4>
+                <p class="team-position">Куратор коллекций</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="team-member">
+                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Иван Соколов" class="team-photo">
+                <h4 class="team-name">Иван Соколов</h4>
+                <p class="team-position">Разработчик приложений</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="cta-section">
+        <h3 class="cta-title">Присоединяйтесь к ArtSphere сегодня!</h3>
+        <p style="margin-bottom: 25px; font-size: 1.1rem;">Откройте для себя мир современного искусства или представьте свои работы тысячам ценителей</p>
+        <a href="#" class="cta-button">Начать сейчас</a>
+    </div>
+</div>
+
+<!-- Футер -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Контакты</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Искусств, 15</p>
+            <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+            <p><i class="fas fa-envelope"></i> info@artsphere.ru</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Социальные сети</h4>
+            <div class="footer-social-links">
+                <a href="https://vk.com/artsphere" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+                <a href="https://t.me/artsphere" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+                           </div>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Меню</h4>
+            <a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a>
+            <a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a>
+            <a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a>
+            <a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a>
+            <a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a>
+            <a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a>
+            <a href="zx.html"><i class="fas fa-info-circle"></i> Часы работы</a>
+            <a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a>
+	    <a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a>
+	    <a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 ArtSphere. Все права защищены.</p>
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

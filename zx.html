@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtSphere - График оформления заказов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2d3748;
+            --secondary-color: #5a67d8;
+            --accent-color: #e53e3e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+            --border-color: #e2e8f0;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        
+        /* Навигационная панель */
+        .navbar-default {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-default .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar-default .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .navbar-default .navbar-brand:hover img {
+            transform: rotate(-5deg) scale(1.05);
+        }
+        
+        .navbar-default .navbar-toggle {
+            border-color: #ddd;
+        }
+        
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-default .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 15px 20px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: var(--secondary-color);
+            background-color: transparent;
+        }
+        
+        .dropdown-menu {
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            min-width: 220px;
+        }
+        
+        .dropdown-menu > li > a {
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            color: var(--text-color);
+        }
+        
+        .dropdown-menu > li > a:hover {
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 25px;
+            color: var(--secondary-color);
+        }
+
+        /* Основное содержимое */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Календарь заказов */
+        .schedule-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .schedule-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .schedule-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        
+        .current-month {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+        }
+        
+        .day-header {
+            text-align: center;
+            font-weight: 600;
+            color: var(--secondary-color);
+            padding: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .day {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 100px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .day:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .available {
+            background: #f0fff4;
+            border-color: #9ae6b4;
+        }
+        
+        .available .day-number {
+            color: #2f855a;
+        }
+        
+        .unavailable {
+            background: #fff5f5;
+            border-color: #fed7d7;
+            opacity: 0.7;
+        }
+        
+        .unavailable .day-number {
+            color: #c53030;
+        }
+        
+        .status {
+            font-size: 0.9rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .available .status {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .unavailable .status {
+            background: #fed7d7;
+            color: #9b2c2c;
+        }
+        
+        /* Информационный блок */
+        .info-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .info-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-card h4 {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        /* Футер */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 2rem 0 0;
+            position: relative;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section {
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .footer-section p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer-section p i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .calendar {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .schedule-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .calendar {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .calendar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .schedule-container,
+            .info-section {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .calendar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="1.html">
+                <img src="https://sun9-26.userapi.com/impg/zG7UPJh5HG1Rs9Ur_lrDSW9CxFxZC_KrXQ3kVw/XPRhtTZUYgQ.jpg?size=246x213&quality=96&sign=39c66d763404b96c01fcadd29a33deb5&type=album" alt="Логотип ArtSphere">
+                ArtSphere
+            </a>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Меню <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a></li>
+                        <li><a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a></li>
+                        <li><a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a></li>
+                        <li><a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a></li>
+                        <li><a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a></li>
+                        <li><a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a></li>
+                        <li><a href="zx.html"><i class="fas fa-clock"></i> Часы работы</a></li>
+		        <li><a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a></li>
+		        <li><a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a></li>
+		        <li><a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Основное содержимое -->
+<div class="container">
+    <header class="page-header">
+        <h1>График оформления заказов</h1>
+        <p>Узнайте, в какие дни вы можете оформить заказ в нашей галерее</p>
+    </header>
+    
+    <div class="schedule-container">
+        <div class="schedule-header">
+            <h2>Календарь заказов</h2>
+            <div class="current-month">Июнь 2023</div>
+        </div>
+        
+        <div class="calendar">
+            <div class="day-header">Пн</div>
+            <div class="day-header">Вт</div>
+            <div class="day-header">Ср</div>
+            <div class="day-header">Чт</div>
+            <div class="day-header">Пт</div>
+            <div class="day-header">Сб</div>
+            <div class="day-header">Вс</div>
+            
+            <!-- Пустые дни для выравнивания -->
+            <div class="day"></div>
+            <div class="day"></div>
+            <div class="day"></div>
+            
+            <!-- Дни месяца -->
+            <div class="day available">
+                <div class="day-number">1</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">2</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">3</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">4</div>
+                <div class="status">Доступно</div>
+            </div>
+            
+            <div class="day unavailable">
+                <div class="day-number">5</div>
+                <div class="status">Недоступно</div>
+            </div>
+            <div class="day unavailable">
+                <div class="day-number">6</div>
+                <div class="status">Недоступно</div>
+            </div>
+            
+            <!-- Продолжение дней месяца -->
+            <div class="day available">
+                <div class="day-number">7</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">8</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">9</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">10</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day available">
+                <div class="day-number">11</div>
+                <div class="status">Доступно</div>
+            </div>
+            <div class="day unavailable">
+                <div class="day-number">12</div>
+                <div class="status">Недоступно</div>
+            </div>
+            <div class="day unavailable">
+                <div class="day-number">13</div>
+                <div class="status">Недоступно</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-section">
+        <h3>Информация о заказах</h3>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4><i class="fas fa-clock"></i> Часы работы</h4>
+                <p>Заказы принимаются с 10:00 до 20:00 в доступные дни. Обработка заказов происходит в течение 24 часов.</p>
+            </div>
+            
+
+            
+            <div class="info-card">
+                <h4><i class="fas fa-phone"></i> Свяжитесь с нами</h4>
+                <p>Если у вас есть вопросы по оформлению заказа, пожалуйста, свяжитесь с нами по телефону +7 (123) 456-78-90 или email: orders@artsphere.ru</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Футер -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Контакты</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Искусств, 15</p>
+            <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+            <p><i class="fas fa-envelope"></i> info@artsphere.ru</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Социальные сети</h4>
+            <a href="https://vk.com/artsphere" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+            <a href="https://t.me/artsphere" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Меню</h4>
+            <a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a>
+            <a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a>
+            <a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a>
+            <a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a>
+            <a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a>
+            <a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a>
+            <a href="zx.html"><i class="fas fa-info-circle"></i> Часы работы</a>
+            <a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a>
+	    <a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a>
+	    <a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 ArtSphere. Все права защищены.</p>
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Пометить текущий день
+        const today = new Date();
+        if (today.getMonth() === 5 && today.getFullYear() === 2023) { // Июнь 2023
+            const dayElements = document.querySelectorAll('.day');
+            dayElements.forEach(day => {
+                const dayNumber = day.querySelector('.day-number');
+                if (dayNumber && parseInt(dayNumber.textContent) === today.getDate()) {
+                    day.style.border = '2px solid var(--secondary-color)';
+                    day.style.boxShadow = '0 0 0 3px rgba(90, 103, 216, 0.3)';
+                }
+            });
+        }
+        
+        // Добавить обработчики клика для дней
+        const availableDays = document.querySelectorAll('.day.available');
+        availableDays.forEach(day => {
+            day.addEventListener('click', function() {
+                const dayNumber = this.querySelector('.day-number').textContent;
+                alert(`Вы выбрали ${dayNumber} июня для оформления заказа!`);
+            });
+        });
+    });
+</script>
+</body>
+</html>

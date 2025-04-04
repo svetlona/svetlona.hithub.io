@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtSphere - Фреймовая структура</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2d3748;
+            --secondary-color: #5a67d8;
+            --accent-color: #e53e3e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+            --border-color: #e2e8f0;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        
+        /* Навигационная панель */
+        .navbar-default {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-default .navbar-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .navbar-default .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .navbar-default .navbar-brand:hover img {
+            transform: rotate(-5deg) scale(1.05);
+        }
+        
+        .navbar-default .navbar-toggle {
+            border-color: #ddd;
+        }
+        
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-default .navbar-nav > li > a {
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 15px 20px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: var(--secondary-color);
+            background-color: transparent;
+        }
+        
+        .dropdown-menu {
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            min-width: 220px;
+        }
+        
+        .dropdown-menu > li > a {
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            color: var(--text-color);
+        }
+        
+        .dropdown-menu > li > a:hover {
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 25px;
+            color: var(--secondary-color);
+        }
+
+        /* Основное содержимое */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Фреймовая структура */
+        .frame-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .frame-controls {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .frame-controls h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .frame-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .frame-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .frame-btn:hover {
+            background: #4a56b8;
+            transform: translateY(-2px);
+        }
+        
+        .frames-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .frame-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .frame-header {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        
+        .frame-content {
+            height: calc(100% - 40px);
+            width: 100%;
+            border: none;
+        }
+        
+        /* Кнопки управления */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .control-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-btn:hover {
+            background: #4a56b8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(90, 103, 216, 0.3);
+        }
+        
+        .control-btn.secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .control-btn.secondary:hover {
+            background: #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Футер */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 2rem 0 0;
+            position: relative;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section {
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .footer-section p {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .footer-section p i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-section a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .frames-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .frame-box {
+                height: 300px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 40px 15px 100px;
+            }
+            
+            .frame-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="1.html">
+                <img src="https://sun9-26.userapi.com/impg/zG7UPJh5HG1Rs9Ur_lrDSW9CxFxZC_KrXQ3kVw/XPRhtTZUYgQ.jpg?size=246x213&quality=96&sign=39c66d763404b96c01fcadd29a33deb5&type=album" alt="Логотип ArtSphere">
+                ArtSphere
+            </a>
+        </div>
+        
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Меню <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a></li>
+                        <li><a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a></li>
+                        <li><a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a></li>
+                        <li><a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a></li>
+                        <li><a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a></li>
+                        <li><a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a></li>
+                        <li><a href="zx.html"><i class="fas fa-clock"></i> Часы работы</a></li>
+		        <li><a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a></li>
+		        <li><a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a></li>
+		        <li><a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Основное содержимое -->
+<div class="container">
+    <header class="page-header">
+        <h1>Фреймовая структура с именованными окнами</h1>
+        <p>Демонстрация возможностей работы с именованными окнами и фреймами</p>
+    </header>
+    
+    <div class="frame-container">
+        <div class="frame-controls">
+            <h3>Управление фреймами</h3>
+            <p>Используйте кнопки для загрузки контента в разные фреймы. Каждое окно имеет имя, которое используется для целевой загрузки.</p>
+            
+            <div class="frame-buttons">
+                <button class="frame-btn" onclick="loadFrame('mainFrame', 'frame-content1.html')">
+                    <i class="fas fa-file-alt"></i> Загрузить в главный фрейм
+                </button>
+                <button class="frame-btn" onclick="loadFrame('sideFrame', 'frame-content2.html')">
+                    <i class="fas fa-file-alt"></i> Загрузить в боковой фрейм
+                </button>
+                <button class="frame-btn" onclick="loadBothFrames()">
+                    <i class="fas fa-file-alt"></i> Загрузить в оба фрейма
+                </button>
+                <button class="frame-btn" onclick="openNewWindow()">
+                    <i class="fas fa-external-link-alt"></i> Открыть новое окно
+                </button>
+                <button class="frame-btn" onclick="loadFrame('mainFrame', 'frame-form.html')">
+                    <i class="fas fa-edit"></i> Загрузить форму
+                </button>
+            </div>
+        </div>
+        
+        <div class="frames-wrapper">
+            <div class="frame-box">
+                <div class="frame-header">Главный фрейм (имя: mainFrame)</div>
+                <iframe src="frame-content1.html" class="frame-content" name="mainFrame" id="mainFrame"></iframe>
+            </div>
+            
+            <div class="frame-box">
+                <div class="frame-header">Боковой фрейм (имя: sideFrame)</div>
+                <iframe src="frame-content2.html" class="frame-content" name="sideFrame" id="sideFrame"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="control-btn" onclick="reloadAllFrames()">
+            <i class="fas fa-sync-alt"></i> Обновить все фреймы
+        </button>
+        <button class="control-btn secondary" onclick="clearAllFrames()">
+            <i class="fas fa-broom"></i> Очистить все фреймы
+        </button>
+    </div>
+</div>
+
+<!-- Футер -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Контакты</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Искусств, 15</p>
+            <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+            <p><i class="fas fa-envelope"></i> info@artsphere.ru</p>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Социальные сети</h4>
+            <a href="https://vk.com/artsphere" target="_blank"><i class="fab fa-vk"></i> ВКонтакте</a>
+            <a href="https://t.me/artsphere" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Меню</h4>
+            <a href="qa.html"><i class="fas fa-paint-brush"></i> Топ художников</a>
+            <a href="qs.html"><i class="fas fa-image"></i> Топ Картины</a>
+            <a href="qw.html"><i class="fas fa-users"></i> Художники в галерее</a>
+            <a href="qe.html"><i class="fas fa-shopping-cart"></i> Приобрести картины</a>
+            <a href="qr.html"><i class="fas fa-newspaper"></i> Лента новостей</a>
+            <a href="qd.html"><i class="fas fa-info-circle"></i> О проекте</a>
+            <a href="zx.html"><i class="fas fa-info-circle"></i> Часы работы</a>
+            <a href="as.html"><i class="fas fa-book"></i> Справочник организаций</a>
+	    <a href="xc.html"><i class="fas fa-edit"></i> Текстовый редактор</a>
+	    <a href="sd.html"><i class="fas fa-window-restore"></i> Фреймовая структура</a>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2023 ArtSphere. Все права защищены.</p>
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    // Функция для загрузки контента в указанный фрейм
+    function loadFrame(frameName, contentUrl) {
+        window.frames[frameName].location.href = contentUrl;
+    }
+    
+    // Функция для загрузки контента в оба фрейма
+    function loadBothFrames() {
+        loadFrame('mainFrame', 'frame-content1.html');
+        loadFrame('sideFrame', 'frame-content2.html');
+    }
+    
+    // Функция для открытия нового именованного окна
+    function openNewWindow() {
+        const newWindow = window.open('new-window.html', 'artsphereWindow', 
+            'width=600,height=400,resizable=yes,scrollbars=yes');
+        
+        if (newWindow) {
+            newWindow.focus();
+        } else {
+            alert('Пожалуйста, разрешите всплывающие окна для этого сайта');
+        }
+    }
+    
+    // Функция для обновления всех фреймов
+    function reloadAllFrames() {
+        document.getElementById('mainFrame').contentWindow.location.reload();
+        document.getElementById('sideFrame').contentWindow.location.reload();
+    }
+    
+    // Функция для очистки всех фреймов
+    function clearAllFrames() {
+        document.getElementById('mainFrame').src = 'about:blank';
+        document.getElementById('sideFrame').src = 'about:blank';
+    }
+    
+    // Создаем демонстрационные страницы для фреймов, если их нет
+    function createDemoPages() {
+        if (!localStorage.getItem('frame-content1.html')) {
+            const content1 = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Главный контент</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        h1 { color: #2d3748; }
+        p { color: #4a5568; }
+    </style>
+</head>
+<body>
+    <h1>Главный фрейм</h1>
+    <p>Это содержимое загружено в главный фрейм с именем "mainFrame".</p>
+    <p>Вы можете загрузить сюда другой контент, используя кнопки управления.</p>
+    <p><a href="frame-form.html" target="_self">Открыть форму в этом фрейме</a></p>
+</body>
+</html>`;
+            localStorage.setItem('frame-content1.html', content1);
+        }
+        
+        if (!localStorage.getItem('frame-content2.html')) {
+            const content2 = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Боковой контент</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f0f8ff;
+        }
+        h1 { color: #2d3748; }
+        p { color: #4a5568; }
+    </style>
+</head>
+<body>
+    <h1>Боковой фрейм</h1>
+    <p>Это содержимое загружено в боковой фрейм с именем "sideFrame".</p>
+    <p>Обратите внимание, что контент загружается только в указанный фрейм.</p>
+    <p><a href="frame-form.html" target="_parent">Открыть форму в родительском окне</a></p>
+</body>
+</html>`;
+            localStorage.setItem('frame-content2.html', content2);
+        }
+        
+        if (!localStorage.getItem('frame-form.html')) {
+            const formContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Форма</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #fffaf0;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Пример формы</h1>
+    <form onsubmit="alert('Форма отправлена!'); return false;">
+        <div>
+            <label>Имя:</label>
+            <input type="text" required>
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" required>
+        </div>
+        <div>
+            <label>Сообщение:</label>
+            <textarea rows="4" required></textarea>
+        </div>
+        <button type="submit">Отправить</button>
+    </form>
+    <p><a href="frame-content1.html" target="_top">Вернуться к началу</a></p>
+</body>
+</html>`;
+            localStorage.setItem('frame-form.html', formContent);
+        }
+        
+        if (!localStorage.getItem('new-window.html')) {
+            const newWindowContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Новое окно</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f0fff0;
+        }
+        h1 { color: #2d3748; }
+    </style>
+</head>
+<body>
+    <h1>Новое именованное окно</h1>
+    <p>Это окно было открыто с именем "artsphereWindow".</p>
+    <p>Вы можете управлять им из родительского окна.</p>
+    <button onclick="window.opener.loadFrame('mainFrame', 'frame-form.html')">
+        Загрузить форму в главный фрейм родителя
+    </button>
+</body>
+</html>`;
+            localStorage.setItem('new-window.html', newWindowContent);
+        }
+    }
+    
+    // При загрузке страницы создаем демонстрационные страницы
+    $(document).ready(function() {
+        createDemoPages();
+    });
+</script>
+</body>
+</html>

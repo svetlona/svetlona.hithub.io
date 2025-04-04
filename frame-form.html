@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Форма</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #fffaf0;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Пример формы</h1>
+    <form onsubmit="alert('Форма отправлена!'); return false;">
+        <div>
+            <label>Имя:</label>
+            <input type="text" required>
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" required>
+        </div>
+        <div>
+            <label>Сообщение:</label>
+            <textarea rows="4" required></textarea>
+        </div>
+        <button type="submit">Отправить</button>
+    </form>
+    <p><a href="frame-content1.html" target="_top">Вернуться к началу</a></p>
+</body>
+</html>
